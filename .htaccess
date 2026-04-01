@@ -1,0 +1,73 @@
+# ============================================================
+#  FamilyHub — Apache Security Configuration
+#  Protege o servidor com headers e regras de acesso.
+# ============================================================
+
+# ─── Bloqueia acesso direto a arquivos sensíveis ────────────
+<FilesMatch "^\.env|\.gitignore|schema\.sql|README\.md">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Bloqueia leitura direta de arquivos de backup e logs
+<FilesMatch "\.(bak|log|sql|sh|md|example)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ─── Headers de Segurança ───────────────────────────────────
+<IfModule mod_headers.c>
+    # Impede que o site seja exibido em iframes (proteção contra clickjacking)
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Ativa o filtro XSS do navegador
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Impede que o navegador "adivinhe" o tipo de conteúdo (MIME sniffing)
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Política de referência — não vaza URL ao navegar para outros sites
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Permissões de recursos do navegador — desativa o que não usa
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+    # Força HTTPS por 1 ano — ative só quando o certificado SSL estiver configurado
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # Content Security Policy — restringe de onde scripts, estilos e imagens podem vir
+    # Permite apenas a própria origem + CDNs conhecidos usados pelo projeto
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://i.pravatar.cc https://images.unsplash.com; connect-src 'self'; frame-ancestors 'none';"
+
+    # Remove o header que revela que é Apache (segurança por obscuridade)
+    Header unset Server
+    Header always unset X-Powered-By
+</IfModule>
+
+# ─── Versão do Apache (ServerTokens / ServerSignature) ─────
+# Não use aqui: essas diretivas só funcionam em httpd.conf ou vhost.
+# O bloco mod_headers acima já reduz vazamento via Header unset Server.
+
+# ─── Desabilita listagem de diretórios ──────────────────────
+Options -Indexes
+
+# ─── Impede acesso direto à pasta php/ pelo navegador ────────
+# Os arquivos PHP devem ser acessados somente via requisições da aplicação.
+# Se alguém tentar acessar /php/ diretamente no browser, recebe 403.
+RedirectMatch 403 ^/php/?$
+
+# ─── Compressão GZIP para respostas mais rápidas ────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
+</IfModule>
+
+# ─── Cache de assets estáticos ──────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css             "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png            "access plus 1 month"
+    ExpiresByType image/jpeg           "access plus 1 month"
+    ExpiresByType image/svg+xml        "access plus 1 month"
+    ExpiresByType text/html            "access plus 0 seconds"
+</IfModule>

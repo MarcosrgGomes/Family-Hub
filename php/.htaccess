@@ -1,0 +1,22 @@
+# ============================================================
+#  FamilyHub — Proteção da pasta PHP
+#
+#  Esta pasta contém a lógica do backend.
+#  Bloqueia qualquer acesso direto pelo navegador que não
+#  venha de uma requisição legítima da aplicação.
+#
+#  Requisições de API (fetch/XMLHttpRequest) funcionam normalmente.
+#  Tentar acessar /php/db.php pelo browser retorna 403.
+# ============================================================
+
+# Impede acesso direto ao db.php (nunca deve ser acessado pelo browser)
+<Files "db.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Headers de segurança específicos para respostas da API
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+</IfModule>

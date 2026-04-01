@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FamilyHub – Organize as atividades, receitas e listas da sua família." />
+  <meta name="theme-color" content="#438370" />
+  <title>FamilyHub</title>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <!-- Tailwind CSS com tema customizado -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Outfit', 'sans-serif'] },
+          colors: {
+            brand:  { light: '#6db09d', main: '#438370', dark: '#2c5c4e' },
+            bg:     { light: '#f8fafc', dark: '#0f172a' },
+            panel:  { light: '#ffffff', dark: '#1e293b' },
+            border: { light: '#e2e8f0', dark: '#334155' },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Ícones Lucide -->
+  <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
+</head>
+
+<!-- Layout de app: ocupa a tela inteira, sem rolar o body -->
+<body class="bg-bg-light dark:bg-bg-dark text-slate-800 dark:text-slate-200 flex h-screen overflow-hidden antialiased transition-colors duration-200">
+
+
+  <!-- ============================================================
+    SIDEBAR — Navegação lateral
+    Desktop: sempre visível | Mobile: abre via hambúrguer
+  ============================================================ -->
+  <aside id="sidebar"
+    class="w-[280px] flex-shrink-0 z-20
+           bg-panel-light dark:bg-panel-dark
+           border-r border-border-light dark:border-border-dark
+           flex flex-col transition-all duration-300
+           fixed inset-y-0 left-0 -translate-x-full
+           md:relative md:translate-x-0"
+    aria-label="Menu de navegação lateral">
+
+    <!-- Cabeçalho: avatar e nome da família -->
+    <div class="pt-8 pb-6 px-6 flex flex-col items-center border-b border-border-light dark:border-border-dark">
+      <div class="w-16 h-16 rounded-full bg-brand-main/10 border border-brand-main/20 flex items-center justify-center text-brand-main mb-4">
+        <i data-lucide="users" class="w-8 h-8" aria-hidden="true"></i>
+      </div>
+      <h1 id="sidebar-family-name" class="text-[15px] font-bold uppercase tracking-wide">Minha Família</h1>
+      <p class="text-[9px] text-slate-400 dark:text-slate-500 tracking-widest mt-1 text-center font-medium">
+        CUIDADO. PROXIMIDADE. EQUILÍBRIO.
+      </p>
+    </div>
+
+    <!-- Navegação com scroll interno -->
+    <nav class="flex-1 overflow-y-auto px-4 py-4 flex flex-col" aria-label="Páginas do aplicativo">
+      <!-- Menu principal (renderNav via JS) -->
+      <ul id="nav-menu"   class="space-y-1.5 flex-1" role="list"></ul>
+      <!-- Menu secundário: Configurações + Sair -->
+      <ul id="nav-config" class="mt-4 pt-4 space-y-1.5 border-t border-border-light dark:border-border-dark" role="list"></ul>
+    </nav>
+
+    <!-- Widget "Próximo Evento" fixo na base -->
+    <div id="next-event-widget"
+      class="p-4 mb-4 mx-4 bg-amber-50/50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-xl"
+      aria-label="Próximo evento da família">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-2 h-2 rounded-full bg-brand-main" aria-hidden="true"></div>
+        <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Próximo Evento</span>
+      </div>
+      <h4 id="next-event-title" class="font-bold text-[13px] text-slate-800 dark:text-slate-200">–</h4>
+      <p  id="next-event-date"  class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">–</p>
+    </div>
+
+  </aside>
+
+
+  <!-- Overlay da sidebar (mobile) -->
+  <div id="sidebar-overlay"
+    class="fixed inset-0 bg-slate-900/40 z-10 hidden md:hidden"
+    aria-hidden="true"></div>
+
+
+  <!-- ============================================================
+    MAIN — Header + Conteúdo da página ativa
+  ============================================================ -->
+  <main id="main-content" class="flex-1 flex flex-col h-full overflow-hidden" aria-live="polite">
+
+    <!-- Header do topo -->
+    <header class="bg-bg-light dark:bg-bg-dark border-b border-border-light dark:border-border-dark
+                   px-6 md:px-10 pt-6 pb-5 flex-shrink-0
+                   flex items-center justify-between gap-4 transition-colors duration-200">
+
+      <!-- Esquerda: hambúrguer + título da seção -->
+      <div class="flex items-center gap-4 min-w-0">
+        <button id="btn-menu"
+          class="md:hidden flex-shrink-0 p-2 rounded-lg border border-border-light dark:border-border-dark
+                 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="sidebar">
+          <i data-lucide="menu" class="w-5 h-5" aria-hidden="true"></i>
+        </button>
+        <div class="min-w-0">
+          <h2 id="page-title"    class="text-2xl md:text-3xl font-bold tracking-tight truncate"></h2>
+          <p  id="page-subtitle" class="text-slate-500 dark:text-slate-400 mt-0.5 text-[14px] md:text-[15px] truncate"></p>
+        </div>
+      </div>
+
+      <!-- Direita: busca + ação + notificações + tema + logout -->
+      <div class="flex items-center gap-3 flex-shrink-0">
+
+        <!-- Campo de busca global (oculto em mobile) -->
+        <div class="relative hidden sm:block">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true"></i>
+          <input id="global-search" type="search" placeholder="Pesquisar..." autocomplete="off"
+            class="pl-11 pr-4 py-2.5 rounded-xl text-sm shadow-sm
+                   border border-border-light dark:border-border-dark
+                   bg-panel-light dark:bg-panel-dark dark:text-slate-200
+                   focus:outline-none focus:border-brand-main focus:ring-1 focus:ring-brand-main
+                   w-[200px] lg:w-[280px] transition-all duration-200"
+            aria-label="Pesquisar no aplicativo" />
+        </div>
+
+        <!-- Botão de ação contextual (muda conforme a página) -->
+        <button id="header-btn"
+          class="bg-brand-main hover:bg-brand-dark active:bg-brand-dark text-white
+                 px-4 md:px-5 py-2.5 rounded-xl flex items-center gap-2
+                 text-sm font-medium transition-colors shadow-sm whitespace-nowrap"
+          aria-label="Ação principal da página atual">
+          <i data-lucide="plus" class="w-4 h-4" aria-hidden="true"></i>
+          <span id="header-btn-text">Nova Atividade</span>
+        </button>
+
+        <!-- Notificações -->
+        <button id="btn-notif" onclick="toggleNotifPanel()"
+          class="relative p-2.5 rounded-xl border border-border-light dark:border-border-dark
+                 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800
+                 transition-colors flex-shrink-0"
+          aria-label="Notificações" title="Notificações">
+          <i data-lucide="bell" class="w-4 h-4" aria-hidden="true"></i>
+          <span id="notif-badge"
+            class="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[9px] font-black rounded-full items-center justify-center leading-none"
+            style="display:none">0</span>
+        </button>
+
+        <!-- Alternar tema claro/escuro -->
+        <button id="btn-theme"
+          class="p-2.5 rounded-xl border border-border-light dark:border-border-dark
+                 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800
+                 transition-colors flex-shrink-0"
+          aria-label="Alternar entre tema claro e escuro" title="Alternar tema">
+          <i data-lucide="sun"  class="w-4 h-4 hidden dark:block" aria-hidden="true"></i>
+          <i data-lucide="moon" class="w-4 h-4 block  dark:hidden" aria-hidden="true"></i>
+        </button>
+
+        <!-- Logout -->
+        <button onclick="handleLogout()"
+          class="p-2.5 rounded-xl border border-border-light dark:border-border-dark
+                 text-slate-500 dark:text-slate-400 hover:bg-red-50 hover:text-red-500
+                 dark:hover:bg-red-900/20 transition-colors flex-shrink-0"
+          aria-label="Sair" title="Sair">
+          <i data-lucide="log-out" class="w-4 h-4" aria-hidden="true"></i>
+        </button>
+
+      </div>
+    </header>
+
+    <!-- Área de conteúdo (scroll apenas aqui, nunca no body) -->
+    <div class="flex-1 overflow-y-auto px-6 md:px-10 pt-8 pb-10">
+      <div id="page-content"></div>
+    </div>
+
+  </main>
+
+
+  <!-- ============================================================
+    MODAL — Overlay reutilizável para formulários e detalhes
+  ============================================================ -->
+  <div id="modal-overlay"
+    class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4
+           opacity-0 pointer-events-none transition-opacity duration-300"
+    role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+
+    <div id="modal-content"
+      class="bg-panel-light dark:bg-panel-dark rounded-2xl shadow-xl w-full max-w-lg
+             transform scale-95 transition-transform duration-300 overflow-hidden">
+
+      <!-- Cabeçalho do modal -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-border-light dark:border-border-dark">
+        <h3 id="modal-title" class="font-bold text-lg text-slate-800 dark:text-slate-100"></h3>
+        <button id="modal-close" onclick="closeModal()"
+          class="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200
+                 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          aria-label="Fechar modal">
+          <i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Corpo do modal (preenchido via JS) -->
+      <div id="modal-body" class="px-6 py-5"></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+    PAINEL DE NOTIFICAÇÕES — Slide da direita
+  ============================================================ -->
+  <div id="notif-overlay"
+    class="fixed inset-0 bg-slate-900/30 z-40 hidden"
+    onclick="closeNotifPanel()" aria-hidden="true"></div>
+
+  <aside id="notif-panel"
+    class="fixed top-0 right-0 h-full w-[340px] bg-panel-light dark:bg-panel-dark shadow-2xl z-50
+           flex flex-col translate-x-full transition-transform duration-300
+           border-l border-border-light dark:border-border-dark">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4 border-b border-border-light dark:border-border-dark flex-shrink-0">
+      <div class="flex items-center gap-2">
+        <i data-lucide="bell" class="w-5 h-5 text-brand-main"></i>
+        <h3 class="font-bold text-base">Notificações</h3>
+      </div>
+      <button onclick="closeNotifPanel()"
+        class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- Ações rápidas -->
+    <div class="px-5 py-2 border-b border-border-light dark:border-border-dark flex items-center justify-between flex-shrink-0">
+      <span class="text-[11px] text-slate-400 font-medium">Últimas 50 notificações</span>
+      <button onclick="DB.notificacoes=[]; saveDB(false); if(Auth.isLoggedIn()) API.markAllRead(); renderNotifPanel(); updateNotifBadge()"
+        class="text-[11px] text-red-400 hover:text-red-600 font-bold transition-colors">
+        Limpar tudo
+      </button>
+    </div>
+
+    <!-- Lista de notificações -->
+    <div id="notif-list" class="flex-1 overflow-y-auto p-4 custom-scrollbar"></div>
+  </aside>
+
+
+  <!-- ============================================================
+    CONTAINER DE TOASTS (mensagens rápidas)
+  ============================================================ -->
+  <div id="toast-container"
+    class="fixed bottom-6 right-6 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+
+
+  <!-- ============================================================
+    CONFIRM DIALOG — Caixa de confirmação de ações destrutivas
+  ============================================================ -->
+  <div id="confirm-overlay"
+    class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4
+           opacity-0 hidden transition-opacity duration-200">
+    <div class="bg-panel-light dark:bg-panel-dark rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-border-light dark:border-border-dark">
+      <div class="flex items-start gap-3 mb-5">
+        <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-xl flex-shrink-0">
+          <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-1">Confirmar ação</h3>
+          <p id="confirm-msg" class="text-sm text-slate-600 dark:text-slate-400"></p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-3">
+        <button id="confirm-no"
+          class="px-4 py-2 rounded-xl text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          Cancelar
+        </button>
+        <button id="confirm-yes"
+          class="px-4 py-2 rounded-xl text-sm font-bold bg-red-500 text-white hover:bg-red-600 transition-colors">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+    AUTH GUARD — Redireciona para login se não autenticado
+  ============================================================ -->
+  <script>
+    if (!localStorage.getItem('fh_token')) {
+      window.location.href = 'index.html';
+    }
+  </script>
+
+
+  <!-- ============================================================
+    SCRIPTS — Ordem de carregamento importa!
+    config → auth → db → state → utils → ui → notifications
+    → search → crud → modals → gamification → views → app
+  ============================================================ -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/crud.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/gamification.js"></script>
+
+  <!-- Views (cada página é um módulo separado) -->
+  <script src="js/views/view-dashboard.js"></script>
+  <script src="js/views/view-calendar.js"></script>
+  <script src="js/views/view-atividades.js"></script>
+  <script src="js/views/view-listas.js"></script>
+  <script src="js/views/view-receitas.js"></script>
+  <script src="js/views/view-membros.js"></script>
+  <script src="js/views/view-estatisticas.js"></script>
+  <script src="js/views/view-configuracoes.js"></script>
+  <script src="js/views/view-ranking.js"></script>
+  <script src="js/views/view-logs.js"></script>
+
+  <!-- Orquestradores -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>

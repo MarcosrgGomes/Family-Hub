@@ -1,0 +1,11 @@
+/* ============================================================
+   FamilyHub — style.css (Dashboard)
+   Importa os módulos CSS na ordem correta.
+   Adicione novos módulos de estilo aqui conforme necessário.
+============================================================ */
+
+/* 1. Estilos base: body, scrollbar, animações globais */
+@import url('./base.css');
+
+/* 2. Responsividade por componente */
+@import url('./responsive.css');

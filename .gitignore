@@ -1,0 +1,117 @@
+# ==============================================================
+#  FamilyHub — .gitignore
+#  Gerado para publicação via Git (CMD / terminal).
+#  Tudo listado aqui é ignorado pelo Git automaticamente.
+#  O arquivo .env.example é o ÚNICO arquivo de ambiente
+#  que deve ir ao repositório — o .env real NUNCA.
+# ==============================================================
+
+
+# ──────────────────────────────────────────────────────────────
+#  SEGREDOS E CREDENCIAIS  (nunca devem ser versionados)
+# ──────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+*.env
+!.env.example          # exceção: o template de exemplo PODE ir
+
+
+# ──────────────────────────────────────────────────────────────
+#  DEPENDÊNCIAS
+# ──────────────────────────────────────────────────────────────
+/vendor/               # Composer (PHP)
+node_modules/          # npm / yarn
+
+
+# ──────────────────────────────────────────────────────────────
+#  LOGS E CACHE
+# ──────────────────────────────────────────────────────────────
+*.log
+*.cache
+/logs/
+/tmp/
+/temp/
+
+
+# ──────────────────────────────────────────────────────────────
+#  UPLOADS E ARQUIVOS GERADOS EM RUNTIME
+# ──────────────────────────────────────────────────────────────
+/uploads/
+/storage/
+/public/uploads/
+
+
+# ──────────────────────────────────────────────────────────────
+#  BUILDS E DISTRIBUIÇÃO
+# ──────────────────────────────────────────────────────────────
+/dist/
+/build/
+/out/
+
+
+# ──────────────────────────────────────────────────────────────
+#  IDEs E EDITORES
+# ──────────────────────────────────────────────────────────────
+
+# VS Code
+.vscode/
+!.vscode/extensions.json   # exceção: lista de extensões recomendadas é útil
+
+# JetBrains (PHPStorm, WebStorm, IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+Session.vim
+
+
+# ──────────────────────────────────────────────────────────────
+#  SISTEMA OPERACIONAL
+# ──────────────────────────────────────────────────────────────
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.fuse_hidden*
+.Trash-*
+
+
+# ──────────────────────────────────────────────────────────────
+#  PHP
+# ──────────────────────────────────────────────────────────────
+*.phar
+/composer.lock         # opcional: remova esta linha se quiser versionar o lock
+
+
+# ──────────────────────────────────────────────────────────────
+#  BACKUPS E ARQUIVOS TEMPORÁRIOS DE EDITORES
+# ──────────────────────────────────────────────────────────────
+*.orig
+*.bak
+*.tmp
+*.temp
+*.old

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FamilyHub — Acesso</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Ícones -->
+  <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
+
+  <!-- Estilos da tela de login -->
+  <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body class="bg-bg-light dark:bg-bg-dark text-slate-900 dark:text-slate-100 min-h-screen flex antialiased overflow-x-hidden">
+
+  <!-- ============================================================
+    PAINEL ESQUERDO — Visível apenas no desktop (lg+)
+  ============================================================ -->
+  <div class="hidden lg:flex w-[45%] flex-shrink-0 relative overflow-hidden bg-gradient-to-br from-brand-main via-brand-dark to-[#1a3d32]">
+
+    <!-- Decoração de fundo -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-[-10%] left-[-10%] w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-black/15 rounded-full blur-3xl"></div>
+      <!-- Padrão de pontos -->
+      <svg class="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.5" fill="white"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dots)"/>
+      </svg>
+    </div>
+
+    <!-- Conteúdo do painel esquerdo -->
+    <div class="relative z-10 flex flex-col justify-center items-center w-full p-12 text-white text-center gap-7">
+
+      <!-- Ícone flutuante -->
+      <div class="float">
+        <div class="w-24 h-24 bg-white/15 backdrop-blur-sm border border-white/20 rounded-3xl flex items-center justify-center shadow-2xl mx-auto mb-2">
+          <span class="text-5xl">🏠</span>
+        </div>
+      </div>
+
+      <!-- Título e slogan -->
+      <div class="fade-in delay-1">
+        <h1 class="text-4xl font-black tracking-tight mb-2">FamilyHub</h1>
+        <p class="text-emerald-200 text-base font-medium leading-relaxed max-w-xs mx-auto">
+          Organize, conecte e celebre cada momento da sua família.
+        </p>
+      </div>
+
+      <!-- Lista de funcionalidades -->
+      <div class="grid grid-cols-1 gap-2.5 w-full max-w-[280px] fade-in delay-2">
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-2.5 text-left">
+          <span class="text-lg flex-shrink-0">📅</span>
+          <span class="text-sm font-medium text-white/90">Calendário familiar compartilhado</span>
+        </div>
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-2.5 text-left">
+          <span class="text-lg flex-shrink-0">✅</span>
+          <span class="text-sm font-medium text-white/90">Tarefas com gamificação e ranking</span>
+        </div>
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-2.5 text-left">
+          <span class="text-lg flex-shrink-0">🛒</span>
+          <span class="text-sm font-medium text-white/90">Listas de compras sincronizadas</span>
+        </div>
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-2.5 text-left">
+          <span class="text-lg flex-shrink-0">🍽️</span>
+          <span class="text-sm font-medium text-white/90">Receitas e cardápio da família</span>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+    PAINEL DIREITO — Formulário de login/registro
+  ============================================================ -->
+  <div class="flex-1 flex items-center justify-center p-6 lg:p-12 relative overflow-y-auto">
+
+    <!-- Gradiente decorativo (mobile) -->
+    <div class="lg:hidden fixed inset-0 pointer-events-none overflow-hidden opacity-20">
+      <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-main rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-light rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative w-full max-w-md my-4 lg:my-0">
+
+      <!-- Header mobile -->
+      <div class="lg:hidden text-center mb-6 fade-in">
+        <div class="w-14 h-14 bg-brand-main rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-3">
+          <span class="text-2xl">🏠</span>
+        </div>
+        <h1 class="text-2xl font-black">FamilyHub</h1>
+        <p class="text-slate-500 text-sm mt-1">Sua família organizada</p>
+      </div>
+
+
+
+      <!-- Card principal com abas Login / Registro -->
+      <div class="bg-panel-light dark:bg-panel-dark border border-border-light dark:border-border-dark rounded-3xl card-glow overflow-hidden fade-in delay-2">
+
+        <!-- Topo do card -->
+        <div class="p-5 flex items-center justify-between border-b border-border-light dark:border-border-dark">
+          <div class="flex items-center gap-3">
+            <div class="hidden lg:flex w-9 h-9 bg-brand-main rounded-xl items-center justify-center shadow-md">
+              <span class="text-base">🏠</span>
+            </div>
+            <div>
+              <h2 class="text-[15px] font-bold leading-none">Acesso à Plataforma</h2>
+              <p class="text-[10px] text-slate-400 tracking-widest font-medium uppercase">FamilyHub 2026</p>
+            </div>
+          </div>
+          <!-- Toggle de tema -->
+          <button onclick="document.documentElement.classList.toggle('dark')"
+                  class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500">
+            <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+            <i data-lucide="sun"  class="w-4 h-4 hidden dark:block"></i>
+          </button>
+        </div>
+
+        <!-- Abas -->
+        <div class="flex border-b border-border-light dark:border-border-dark px-6">
+          <button id="tab-login"    onclick="showForm('login')"
+            class="tab-active py-3 pr-6 text-sm font-bold text-brand-main transition-colors">
+            Entrar
+          </button>
+          <button id="tab-register" onclick="showForm('register')"
+            class="py-3 px-6 text-sm font-medium text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+            Criar conta
+          </button>
+        </div>
+
+        <!-- Formulário de Login -->
+        <div id="form-login" class="form-section p-8">
+          <div class="mb-7">
+            <h3 class="text-2xl font-bold">Bem-vindo de volta 👋</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Insira seus dados para acessar sua conta.</p>
+          </div>
+          <div class="space-y-4">
+
+            <!-- Campo e-mail -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">E-mail</label>
+              <div class="relative">
+                <i data-lucide="mail" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input id="login-email" type="email" placeholder="nome@exemplo.com" autocomplete="email"
+                  class="w-full pl-10 pr-4 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm transition-all">
+              </div>
+            </div>
+
+            <!-- Campo senha -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Senha</label>
+              <div class="relative">
+                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password"
+                  class="w-full pl-10 pr-12 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm transition-all"
+                  onkeypress="if(event.key==='Enter') submitLogin()">
+                <button type="button" onclick="togglePassVis('login-pass', this)"
+                  class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                  <i data-lucide="eye" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Mensagem de erro -->
+            <div id="login-error" class="hidden flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 rounded-xl text-red-600 dark:text-red-400 text-sm">
+              <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+              <span id="login-error-msg"></span>
+            </div>
+
+            <!-- Botão entrar -->
+            <button id="login-btn" onclick="submitLogin()"
+              class="btn-scale w-full bg-brand-main hover:bg-brand-dark text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-brand-main/25 flex items-center justify-center gap-2 text-[15px]">
+              <span id="login-btn-text">Entrar na plataforma</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+
+          </div>
+          <p class="mt-6 text-center text-sm text-slate-400">
+            Não tem conta?
+            <button onclick="showForm('register')" class="text-brand-main font-bold hover:underline ml-1">Cadastre-se grátis</button>
+          </p>
+        </div>
+
+        <!-- Formulário de Registro -->
+        <div id="form-register" class="form-section hidden p-8">
+          <div class="mb-6">
+            <h3 class="text-2xl font-bold">Criar sua conta 🏠</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Organize sua família de forma inteligente.</p>
+          </div>
+          <div class="space-y-4">
+
+            <!-- Nome completo -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Nome completo *</label>
+              <div class="relative">
+                <i data-lucide="user" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input id="reg-name" type="text" placeholder="Seu nome completo"
+                  class="w-full pl-10 pr-4 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm">
+              </div>
+            </div>
+
+            <!-- Idade + Telefone -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Idade</label>
+                <input id="reg-age" type="number" placeholder="Ex: 30" min="1" max="120"
+                  class="w-full px-4 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Telefone</label>
+                <input id="reg-phone" type="text" placeholder="(00) 00000-0000"
+                  class="w-full px-4 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm">
+              </div>
+            </div>
+
+            <!-- E-mail -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">E-mail *</label>
+              <div class="relative">
+                <i data-lucide="mail" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input id="reg-email" type="email" placeholder="nome@exemplo.com"
+                  class="w-full pl-10 pr-4 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm">
+              </div>
+            </div>
+
+            <!-- Senha + força -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Senha *</label>
+              <div class="relative">
+                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input id="reg-password" type="password" placeholder="••••••••"
+                  class="w-full pl-10 pr-12 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm"
+                  oninput="validatePassword()">
+                <button type="button" onclick="togglePassVis('reg-password', this)"
+                  class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
+                  <i data-lucide="eye" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <!-- Barra de força da senha -->
+              <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 mt-2.5 rounded-full overflow-hidden">
+                <div id="strength-bar" class="h-full transition-all duration-500 rounded-full" style="width:0%"></div>
+              </div>
+              <!-- Checklist de requisitos -->
+              <ul class="mt-3 grid grid-cols-2 gap-y-1.5 text-xs" id="req-list">
+                <li data-req="len"  class="flex items-center gap-1.5 text-slate-400"><span class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0"></span>8+ caracteres</li>
+                <li data-req="caps" class="flex items-center gap-1.5 text-slate-400"><span class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0"></span>Maiúscula</li>
+                <li data-req="num"  class="flex items-center gap-1.5 text-slate-400"><span class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0"></span>Um número</li>
+                <li data-req="spec" class="flex items-center gap-1.5 text-slate-400"><span class="w-1.5 h-1.5 rounded-full bg-current flex-shrink-0"></span>Caractere especial</li>
+              </ul>
+            </div>
+
+            <!-- Confirmar senha -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Confirmar senha *</label>
+              <div class="relative">
+                <i data-lucide="lock" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input id="reg-confirm" type="password" placeholder="••••••••"
+                  class="w-full pl-10 pr-4 py-3 bg-transparent border border-border-light dark:border-border-dark rounded-xl focus:ring-2 focus:ring-brand-main outline-none text-sm"
+                  oninput="validatePassword()">
+              </div>
+              <p id="match-error" class="text-red-500 text-xs mt-1 hidden">As senhas não coincidem.</p>
+            </div>
+
+            <!-- Erro de registro -->
+            <div id="reg-error" class="hidden flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 rounded-xl text-red-600 dark:text-red-400 text-sm">
+              <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+              <span id="reg-error-msg"></span>
+            </div>
+
+            <!-- Botão criar conta -->
+            <button id="reg-btn" onclick="submitRegister()" disabled
+              class="w-full bg-slate-300 dark:bg-slate-700 text-white font-bold py-3 rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-2">
+              <span id="reg-btn-text">Criar Conta</span>
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+            </button>
+
+          </div>
+          <p class="mt-6 text-center text-sm text-slate-400">
+            Já tem conta?
+            <button onclick="showForm('login')" class="text-brand-main font-bold hover:underline ml-1">Fazer login</button>
+          </p>
+        </div>
+
+      </div><!-- /card principal -->
+
+      <p class="text-center text-xs text-slate-400 mt-5">FamilyHub © 2026 · Sua família organizada</p>
+    </div>
+  </div>
+
+  <!-- Scripts da tela de login (ordem importa: config define API_BASE para login-auth) -->
+  <script src="js/config.js" defer></script>
+  <script src="js/login-theme.js" defer></script>
+  <script src="js/login-auth.js" defer></script>
+  <script src="js/login-ui.js"   defer></script>
+</body>
+</html>
