@@ -160,4 +160,4 @@ familyhub/
 
 ---
 
-MIT License
+Marcos Gomes License
